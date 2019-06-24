@@ -1,0 +1,47 @@
+
+# PlanAhead Generated physical constraints 
+
+NET "CLK_50M" LOC = T8;
+NET "reset" LOC = H2;
+
+#NET "KEY_COL[0]" LOC = D8;
+#NET "KEY_COL[1]" LOC = E7;
+#NET "KEY_COL[2]" LOC = C7;
+#NET "KEY_COL[3]" LOC = F7;
+
+#NET "KEY_ROW[0]" LOC = C4;
+#NET "KEY_ROW[1]" LOC = D5;
+#NET "KEY_ROW[2]" LOC = C5;
+#NET "KEY_ROW[3]" LOC = E6;
+
+NET "bn0" LOC = D11;
+NET "bn1" LOC = C10;
+NET "bn2" LOC = E11;
+NET "bn3" LOC = C9;
+NET "bn4" LOC = D9;
+NET "bn5" LOC = E10;
+#NET "bn6" LOC = F9;
+NET "bn7" LOC = E8;
+
+NET "DOUT7[0]" LOC = B8;
+NET "DOUT7[1]" LOC = A9;
+NET "DOUT7[2]" LOC = A11;
+NET "DOUT7[3]" LOC = A10;
+NET "DOUT7[4]" LOC = B10;
+NET "DOUT7[5]" LOC = A12;
+NET "DOUT7[6]" LOC = B12;
+NET "DOUT7[7]" LOC = A13;
+
+NET "CatL[0]" LOC = A8;
+NET "CatL[1]" LOC = C8;
+NET "CatL[2]" LOC = A7;
+
+NET "led1" LOC = N9;
+NET "led2" LOC = P9;
+NET "led3" LOC = L10;
+NET "led4" LOC = M10;
+# NET "led[4]" LOC = P11;
+# NET "led[5]" LOC = M11;
+# NET "led[6]" LOC = P12;
+# NET "led[7]" LOC = N12;
+

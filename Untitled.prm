@@ -1,0 +1,17 @@
+PROMGEN: Xilinx Prom Generator P.20131013
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+
+promgen -w -p mcs -c FF -o "E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji//Untitled" -x xcf04s -u 00000000 "E:/OneDrive - stu.xjtu.edu.cn/Projects/VHDLlearn/shouhuoji/hdbshj.bit" 
+
+PROM E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\Untitled.prm map: Mon Jun 24 14:19:19 2019
+
+Calculating PROM checksum with fill value ff
+
+Format        Mcs86 (32-bit)
+Size          512K
+PROM start    0000:0000
+PROM end      0007:ffff
+PROM checksum 00f4e084
+
+        Addr1        Addr2                     Date File(s)
+    0000:0000    0007:1543     Jun 24 14:16:58 2019 E:/OneDrive - stu.xjtu.edu.cn/Projects/VHDLlearn/shouhuoji/hdbshj.bit
