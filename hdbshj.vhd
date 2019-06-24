@@ -54,6 +54,9 @@ CONSTANT SCAN_KEY_COL3:STD_LOGIC_VECTOR(5 downto 0):="010000";  -- 扫描第3列
 CONSTANT KEY_PRESSED:STD_LOGIC_VECTOR(5 downto 0):="100000";  -- 有按键按下
 SIGNAL current_state:STD_LOGIC_VECTOR(5 downto 0); --现在状态
 SIGNAL next_state:STD_LOGIC_VECTOR(5 downto 0);  --下个状态
+SIGNAL key_pressed_flag:STD_LOGIC; --键盘按下标志
+SIGNAL KEY_COL_val:STD_LOGIC_VECTOR(3 downto 0); --列值
+SIGNAL KEY_ROW_val:STD_LOGIC_VECTOR(3 downto 0);--行值
 
 SIGNAL  disp0,disp1,disp2,disp4,disp5:STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL  btn0,btn1,btn2,btn3,btn4,btn5,btn7 :STD_LOGIC:='0';
@@ -71,14 +74,75 @@ SIGNAL count_BTN5:INTEGER RANGE 0 TO 20;
 SIGNAL count_BTN7:INTEGER RANGE 0 TO 20;
 BEGIN
 
+p16:PROCESS(clk_1k,reset)------------------------------------------模块3
+	BEGIN
+	if reset = '1';
+    KEY_VAL <= "00000000";
+  else
+    if (key_pressed_flag)
+      case ({KEY_COL_val, KEY_ROW_val})		//矩阵按键编码，KEY_VAL可以根据实际按键进行调节
+        8'b0001_0001 : KEY_VAL <= 4'hD;
+        8'b0001_0010 : KEY_VAL <= 4'hC;
+        8'b0001_0100 : KEY_VAL <= 4'hB;
+        8'b0001_1000 : KEY_VAL <= 4'hA;
+        
+        8'b0010_0001 : KEY_VAL <= 4'hF; //矩阵按键的#
+        8'b0010_0010 : KEY_VAL <= 4'h9;
+        8'b0010_0100 : KEY_VAL <= 4'h6;
+        8'b0010_1000 : KEY_VAL <= 4'h3;
+        
+        8'b0100_0001 : KEY_VAL <= 4'h0;
+        8'b0100_0010 : KEY_VAL <= 4'h8;
+        8'b0100_0100 : KEY_VAL <= 4'h5;
+        8'b0100_1000 : KEY_VAL <= 4'h2;
+        
+        8'b1000_0001 : KEY_VAL <= 4'hE; //矩阵按键的*
+        8'b1000_0010 : KEY_VAL <= 4'h7;
+        8'b1000_0100 : KEY_VAL <= 4'h4;
+        8'b1000_1000 : KEY_VAL <= 4'h1;        
+      endcase
+END PROCESS p16;---------------------------------------结束
+
+p15:PROCESS(clk_1k,reset)------------------------------------------4x4模块开始2
+   begin
+   IF reset='1' THEN
+      
+      KEY_COL              <= "0000";
+      key_pressed_flag <=    '0';
+      
+  else
+    case next_state is
+     WHEN  NO_KEY_PRESSED=>                  	--	// 没有按键按下
+      
+        KEY_COL          <= "0000";
+        key_pressed_flag <=    '0';       		--// 清键盘按下标志
+      
+      SCAN_KEY_COL0 :                      -- 	// 扫描第0列
+        KEY_COL <= "0001";
+      SCAN_KEY_COL1 :                       --	// 扫描第1列
+        KEY_COL <= "0010";
+      SCAN_KEY_COL2 :                       --	// 扫描第2列
+        KEY_COL <= "0100";
+      SCAN_KEY_COL3 :                      -- 	// 扫描第3列
+        KEY_COL <= "1000";
+      KEY_PRESSED :                     	--	// 有按键按下
+      
+        KEY_COL_val          <= KEY_COL;  	--// 锁存列值
+        KEY_ROW_val          <= KEY_ROW;  	--// 锁存行值
+        key_pressed_flag <= '1';         -- // 置键盘按下标志  
+      
+     end case;
+   END IF;
+END PROCESS p15;
+
 p14:PROCESS(clk_1k,reset)------------------------------------------重置模块
 	BEGIN
-	IF reset='0' THEN
+	IF reset='1' THEN
 		current_state<=NO_KEY_PRESSED;
 	ELSE
     current_state<= next_state;
 	END IF;
-END PROCESS p14;
+END PROCESS p14;---------------------------------------重置模块结束
 
 p13:PROCESS(clk_1k,bn0)-------------------------------------------------4x4模块开始
 	BEGIN

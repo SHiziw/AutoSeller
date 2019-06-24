@@ -5,5 +5,20 @@
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
 <messages>
+<msg type="error" file="HDLCompiler" num="839" delta="old" >"E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd" Line 82: Type <arg fmt="%s" index="1">std_logic</arg> does not match with the integer literal
+</msg>
+
+<msg type="error" file="HDLCompiler" num="839" delta="old" >"E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd" Line 89: Type <arg fmt="%s" index="1">std_logic</arg> does not match with the integer literal
+</msg>
+
+<msg type="error" file="HDLCompiler" num="288" delta="new" >"E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd" Line 101: Cannot read from &apos;out&apos; object <arg fmt="%s" index="1">key_col</arg> ; use &apos;buffer&apos; or &apos;inout&apos;
+</msg>
+
+<msg type="error" file="HDLCompiler" num="839" delta="old" >"E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd" Line 103: Type <arg fmt="%s" index="1">std_logic</arg> does not match with the integer literal
+</msg>
+
+<msg type="error" file="HDLCompiler" num="854" delta="old" >"E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd" Line 46: Unit &lt;<arg fmt="%s" index="1">behavioral</arg>&gt; ignored due to previous errors.
+</msg>
+
 </messages>
 
