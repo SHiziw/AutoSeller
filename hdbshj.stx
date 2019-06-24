@@ -4,13 +4,13 @@ Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.13 secs
+Total CPU time to Xst completion: 0.14 secs
  
 --> Parameter xsthdpdir set to E:/OneDrive - stu.xjtu.edu.cn/Projects/VHDLlearn/shouhuoji/xst
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.13 secs
+Total CPU time to Xst completion: 0.14 secs
  
 --> Reading design: hdbshj.prj
 
@@ -41,18 +41,16 @@ TABLE OF CONTENTS
 =========================================================================
 Parsing VHDL file "E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd" into library work
 Parsing entity <hdbshj>.
+INFO:HDLCompiler:1676 - "E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd" Line 38. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
 Parsing architecture <Behavioral> of entity <hdbshj>.
-ERROR:HDLCompiler:839 - "E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd" Line 82: Type std_logic does not match with the integer literal
-ERROR:HDLCompiler:839 - "E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd" Line 89: Type std_logic does not match with the integer literal
-ERROR:HDLCompiler:288 - "E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd" Line 101: Cannot read from 'out' object key_col ; use 'buffer' or 'inout'
-ERROR:HDLCompiler:839 - "E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd" Line 103: Type std_logic does not match with the integer literal
+ERROR:HDLCompiler:806 - "E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd" Line 116: Syntax error near "THEN".
 ERROR:HDLCompiler:854 - "E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd" Line 46: Unit <behavioral> ignored due to previous errors.
 VHDL file E:\OneDrive - stu.xjtu.edu.cn\Projects\VHDLlearn\shouhuoji\hdbshj.vhd ignored due to errors
 --> 
 
 Total memory usage is 4489652 kilobytes
 
-Number of errors   :    5 (   0 filtered)
+Number of errors   :    2 (   0 filtered)
 Number of warnings :    0 (   0 filtered)
 Number of infos    :    0 (   0 filtered)
 

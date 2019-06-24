@@ -35,7 +35,7 @@ entity hdbshj is
     PORT(bn0,bn1,bn2,bn3,bn4,bn5,bn7:IN STD_LOGIC;
 	clk_50M,reset:IN STD_LOGIC;
    KEY_ROW: IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-	KEY_COL: INOUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+	KEY_COL: BUFFER STD_LOGIC_VECTOR(3 DOWNTO 0);
 	DOUT7: OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 	CatL: OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 	led1,led2,led3,led4:OUT STD_LOGIC
@@ -77,29 +77,46 @@ BEGIN
 p16:PROCESS(clk_1k,reset)------------------------------------------模块3
 	BEGIN
 	if reset = '0' then
-    KEY_VAL <= "00000000";
-  else
-    if key_pressed_flag = '1' THEN
-      KEY_VAL<="1101" WHEN(KEY_COL_val="0001" AND KEY_ROW_val="0001") ELSE --矩阵按键编码，KEY_VAL可以根据实际按键进行调节
-      KEY_VAL<="1100" WHEN(KEY_COL_val="0001" AND KEY_ROW_val="0010") ELSE
-      KEY_VAL<="1011" WHEN(KEY_COL_val="0001" AND KEY_ROW_val="0100") ELSE
-      KEY_VAL<="1010" WHEN(KEY_COL_val="0001" AND KEY_ROW_val="1000") ELSE
+    KEY_VAL <= "0000";
+   else
+      if key_pressed_flag = '1' THEN
+         if (KEY_COL_val="0001" AND KEY_ROW_val="0001") then --矩阵按键编码，KEY_VAL可以根据实际按键进行调节
+            KEY_VAL<="1101";
+			elsif (KEY_COL_val="0001" AND KEY_ROW_val="0010") then
+            KEY_VAL<="1100";
+			elsif(KEY_COL_val="0001" AND KEY_ROW_val="0100") THEN
+            KEY_VAL<="1011";
+			ELSIF(KEY_COL_val="0001" AND KEY_ROW_val="1000") THEN
+            KEY_VAL<="1010";
 
-      KEY_VAL<="1111" WHEN(KEY_COL_val="0010" AND KEY_ROW_val="0001") ELSE --矩阵按键的#
-      KEY_VAL<="1001" WHEN(KEY_COL_val="0010" AND KEY_ROW_val="0010") ELSE
-      KEY_VAL<="0110" WHEN(KEY_COL_val="0010" AND KEY_ROW_val="0100") ELSE
-      KEY_VAL<="0011" WHEN(KEY_COL_val="0010" AND KEY_ROW_val="1000") ELSE
+			ELSIF(KEY_COL_val="0010" AND KEY_ROW_val="0001") THEN --矩阵按键的#
+            KEY_VAL<="1111";
+			ELSIF(KEY_COL_val="0010" AND KEY_ROW_val="0010") THEN
+            KEY_VAL<="1001";
+			ELSIF(KEY_COL_val="0010" AND KEY_ROW_val="0100") then
+            KEY_VAL<="0110";
+			ELSIF(KEY_COL_val="0010" AND KEY_ROW_val="1000") THEN
+            KEY_VAL<="0011";
 
-      KEY_VAL<="0000" WHEN(KEY_COL_val="0100" AND KEY_ROW_val="0001") ELSE
-      KEY_VAL<="1000" WHEN(KEY_COL_val="0100" AND KEY_ROW_val="0010") ELSE
-      KEY_VAL<="0101" WHEN(KEY_COL_val="0100" AND KEY_ROW_val="0100") ELSE
-      KEY_VAL<="0010" WHEN(KEY_COL_val="0100" AND KEY_ROW_val="1000") ELSE
+			ELSIF(KEY_COL_val="0100" AND KEY_ROW_val="0001") THEN
+            KEY_VAL<="0000";
+      	ELSIF(KEY_COL_val="0100" AND KEY_ROW_val="0010") THEN
+            KEY_VAL<="1000";
+			ELSIF(KEY_COL_val="0100" AND KEY_ROW_val="0100") THEN
+            KEY_VAL<="0101";
+			ELSIF(KEY_COL_val="0100" AND KEY_ROW_val="1000") THEN
+            KEY_VAL<="0010";
 
-      KEY_VAL<="1110" WHEN(KEY_COL_val="1000" AND KEY_ROW_val="0001") ELSE--/矩阵按键的*
-      KEY_VAL<="0111" WHEN(KEY_COL_val="1000" AND KEY_ROW_val="0001") ELSE
-      KEY_VAL<="0100" WHEN(KEY_COL_val="1000" AND KEY_ROW_val="0001") ELSE
-      KEY_VAL<="0001" WHEN(KEY_COL_val="1000" AND KEY_ROW_val="0001") ELSE
-      "0000";
+			ELSIF(KEY_COL_val="1000" AND KEY_ROW_val="0001") THEN--/矩阵按键的*
+            KEY_VAL<="1110";
+			ELSIF(KEY_COL_val="1000" AND KEY_ROW_val="0001") THEN
+            KEY_VAL<="0111";
+			ELSIF(KEY_COL_val="1000" AND KEY_ROW_val="0001") THEN
+            KEY_VAL<="0100";
+			ELSE(KEY_COL_val="1000" AND KEY_ROW_val="0001") 
+            KEY_VAL<="0001";
+         END IF;
+      end if;
    end if;
 END PROCESS p16;---------------------------------------结束
 
