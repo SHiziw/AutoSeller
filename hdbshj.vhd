@@ -113,8 +113,10 @@ p16:PROCESS(clk_1k,reset)------------------------------------------Ä£¿é3
             KEY_VAL<="0111";
 			ELSIF(KEY_COL_val="1000" AND KEY_ROW_val="0001") THEN
             KEY_VAL<="0100";
-			ELSE(KEY_COL_val="1000" AND KEY_ROW_val="0001") 
+			ELSif (KEY_COL_val="1000" AND KEY_ROW_val="0001") THEN 
             KEY_VAL<="0001";
+         else
+            null;
          END IF;
       end if;
    end if;
