@@ -35,7 +35,7 @@ entity hdbshj is
     PORT(bn0,bn1,bn2,bn3,bn4,bn5,bn7:IN STD_LOGIC;
 	clk_50M,reset:IN STD_LOGIC;
    KEY_ROW: IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-	KEY_COL: OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+	KEY_COL: INOUT STD_LOGIC_VECTOR(3 DOWNTO 0);
 	DOUT7: OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 	CatL: OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 	led1,led2,led3,led4:OUT STD_LOGIC
@@ -45,7 +45,7 @@ end hdbshj;
 
 architecture Behavioral of hdbshj is
 
-SIGNAL key_val: STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL key_val: STD_LOGIC_VECTOR(3 DOWNTO 0);
 CONSTANT NO_KEY_PRESSED:STD_LOGIC_VECTOR(5 downto 0):="000001";  --Ã»ÓÐ°´¼ü°´ÏÂ  
 CONSTANT SCAN_KEY_COL0:STD_LOGIC_VECTOR(5 downto 0):="000010";  -- É¨ÃèµÚ0ÁÐ 
 CONSTANT SCAN_KEY_COL1:STD_LOGIC_VECTOR(5 downto 0):="000100";  -- É¨ÃèµÚ1ÁÐ 
@@ -76,36 +76,36 @@ BEGIN
 
 p16:PROCESS(clk_1k,reset)------------------------------------------Ä£¿é3
 	BEGIN
-	if reset = '1';
+	if reset = '0' then
     KEY_VAL <= "00000000";
   else
-    if (key_pressed_flag)
-      case ({KEY_COL_val, KEY_ROW_val})		//¾ØÕó°´¼ü±àÂë£¬KEY_VAL¿ÉÒÔ¸ù¾ÝÊµ¼Ê°´¼ü½øÐÐµ÷½Ú
-        8'b0001_0001 : KEY_VAL <= 4'hD;
-        8'b0001_0010 : KEY_VAL <= 4'hC;
-        8'b0001_0100 : KEY_VAL <= 4'hB;
-        8'b0001_1000 : KEY_VAL <= 4'hA;
-        
-        8'b0010_0001 : KEY_VAL <= 4'hF; //¾ØÕó°´¼üµÄ#
-        8'b0010_0010 : KEY_VAL <= 4'h9;
-        8'b0010_0100 : KEY_VAL <= 4'h6;
-        8'b0010_1000 : KEY_VAL <= 4'h3;
-        
-        8'b0100_0001 : KEY_VAL <= 4'h0;
-        8'b0100_0010 : KEY_VAL <= 4'h8;
-        8'b0100_0100 : KEY_VAL <= 4'h5;
-        8'b0100_1000 : KEY_VAL <= 4'h2;
-        
-        8'b1000_0001 : KEY_VAL <= 4'hE; //¾ØÕó°´¼üµÄ*
-        8'b1000_0010 : KEY_VAL <= 4'h7;
-        8'b1000_0100 : KEY_VAL <= 4'h4;
-        8'b1000_1000 : KEY_VAL <= 4'h1;        
-      endcase
+    if key_pressed_flag = '1' THEN
+      KEY_VAL<="1101" WHEN(KEY_COL_val="0001" AND KEY_ROW_val="0001") ELSE --¾ØÕó°´¼ü±àÂë£¬KEY_VAL¿ÉÒÔ¸ù¾ÝÊµ¼Ê°´¼ü½øÐÐµ÷½Ú
+      KEY_VAL<="1100" WHEN(KEY_COL_val="0001" AND KEY_ROW_val="0010") ELSE
+      KEY_VAL<="1011" WHEN(KEY_COL_val="0001" AND KEY_ROW_val="0100") ELSE
+      KEY_VAL<="1010" WHEN(KEY_COL_val="0001" AND KEY_ROW_val="1000") ELSE
+
+      KEY_VAL<="1111" WHEN(KEY_COL_val="0010" AND KEY_ROW_val="0001") ELSE --¾ØÕó°´¼üµÄ#
+      KEY_VAL<="1001" WHEN(KEY_COL_val="0010" AND KEY_ROW_val="0010") ELSE
+      KEY_VAL<="0110" WHEN(KEY_COL_val="0010" AND KEY_ROW_val="0100") ELSE
+      KEY_VAL<="0011" WHEN(KEY_COL_val="0010" AND KEY_ROW_val="1000") ELSE
+
+      KEY_VAL<="0000" WHEN(KEY_COL_val="0100" AND KEY_ROW_val="0001") ELSE
+      KEY_VAL<="1000" WHEN(KEY_COL_val="0100" AND KEY_ROW_val="0010") ELSE
+      KEY_VAL<="0101" WHEN(KEY_COL_val="0100" AND KEY_ROW_val="0100") ELSE
+      KEY_VAL<="0010" WHEN(KEY_COL_val="0100" AND KEY_ROW_val="1000") ELSE
+
+      KEY_VAL<="1110" WHEN(KEY_COL_val="1000" AND KEY_ROW_val="0001") ELSE--/¾ØÕó°´¼üµÄ*
+      KEY_VAL<="0111" WHEN(KEY_COL_val="1000" AND KEY_ROW_val="0001") ELSE
+      KEY_VAL<="0100" WHEN(KEY_COL_val="1000" AND KEY_ROW_val="0001") ELSE
+      KEY_VAL<="0001" WHEN(KEY_COL_val="1000" AND KEY_ROW_val="0001") ELSE
+      "0000";
+   end if;
 END PROCESS p16;---------------------------------------½áÊø
 
-p15:PROCESS(clk_1k,reset)------------------------------------------4x4Ä£¿é¿ªÊ¼2
+p15:PROCESS(clk_1k,reset)------------------------------------------4x4Ä£¿é¿ªÊ¼É¨Ãè¸³Öµ¸ø¼üÅÌ
    begin
-   IF reset='1' THEN
+   IF reset='0' THEN
       
       KEY_COL              <= "0000";
       key_pressed_flag <=    '0';
@@ -117,15 +117,15 @@ p15:PROCESS(clk_1k,reset)------------------------------------------4x4Ä£¿é¿ªÊ¼2
         KEY_COL          <= "0000";
         key_pressed_flag <=    '0';       		--// Çå¼üÅÌ°´ÏÂ±êÖ¾
       
-      SCAN_KEY_COL0 :                      -- 	// É¨ÃèµÚ0ÁÐ
+      WHEN SCAN_KEY_COL0=>                      -- 	// É¨ÃèµÚ0ÁÐ
         KEY_COL <= "0001";
-      SCAN_KEY_COL1 :                       --	// É¨ÃèµÚ1ÁÐ
+      WHEN SCAN_KEY_COL1=>                       --	// É¨ÃèµÚ1ÁÐ
         KEY_COL <= "0010";
-      SCAN_KEY_COL2 :                       --	// É¨ÃèµÚ2ÁÐ
+      WHEN SCAN_KEY_COL2 =>                       --	// É¨ÃèµÚ2ÁÐ
         KEY_COL <= "0100";
-      SCAN_KEY_COL3 :                      -- 	// É¨ÃèµÚ3ÁÐ
+      WHEN SCAN_KEY_COL3 =>                      -- 	// É¨ÃèµÚ3ÁÐ
         KEY_COL <= "1000";
-      KEY_PRESSED :                     	--	// ÓÐ°´¼ü°´ÏÂ
+      WHEN KEY_PRESSED=>                    	--	// ÓÐ°´¼ü°´ÏÂ
       
         KEY_COL_val          <= KEY_COL;  	--// Ëø´æÁÐÖµ
         KEY_ROW_val          <= KEY_ROW;  	--// Ëø´æÐÐÖµ
@@ -137,14 +137,14 @@ END PROCESS p15;
 
 p14:PROCESS(clk_1k,reset)------------------------------------------ÖØÖÃÄ£¿é
 	BEGIN
-	IF reset='1' THEN
+	IF reset='0' THEN
 		current_state<=NO_KEY_PRESSED;
 	ELSE
-    current_state<= next_state;
+    current_state<= next_state; --±£³Ö×´Ì¬ÔË×ª
 	END IF;
 END PROCESS p14;---------------------------------------ÖØÖÃÄ£¿é½áÊø
 
-p13:PROCESS(clk_1k,bn0)-------------------------------------------------4x4Ä£¿é¿ªÊ¼
+p13:PROCESS(clk_1k,KEY_ROW)-------------------------------------------------4x4Ä£¿é¿ªÊ¼Æô¶¯Ñ­»·
 	BEGIN
 	case current_state is
     WHEN NO_KEY_PRESSED=>next_state<=SCAN_KEY_COL0;--                 	  Ã»ÓÐ°´¼ü°´ÏÂ	
@@ -173,7 +173,7 @@ p13:PROCESS(clk_1k,bn0)-------------------------------------------------4x4Ä£¿é¿
         else
           next_state <= NO_KEY_PRESSED;
 		  end if;
-    WHEN KEY_PRESSED=>                       --ÓÐ°´¼ü°´ÏÂ
+    WHEN KEY_PRESSED=>                       --ÓÐ°´¼ü°´ÏÂ£¬³ÖÐøÏÝÈëÕâ¸ö×´Ì¬
         if KEY_ROW /="0000" THEN
           next_state <= KEY_PRESSED;
         else
