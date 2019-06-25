@@ -38,7 +38,7 @@ entity hdbshj is
 	KEY_COL: BUFFER STD_LOGIC_VECTOR(3 DOWNTO 0);
 	DOUT7: OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 	CatL: OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-	led1,led2,led3,led4:OUT STD_LOGIC
+	led1,led2,led3,led4,led5:OUT STD_LOGIC
    );
 
 end hdbshj;
@@ -74,47 +74,56 @@ SIGNAL count_BTN5:INTEGER RANGE 0 TO 20;
 SIGNAL count_BTN7:INTEGER RANGE 0 TO 20;
 BEGIN
 
-p16:PROCESS(clk_1k,reset)------------------------------------------Ä£¿é3
+p17:PROCESS(clk_1k,KEY_VAL)
 	BEGIN
-	if reset = '0' then
+		IF(KEY_VAL="0001") THEN
+			led5<='1';
+		ELSE
+		null;
+		END IF;
+END PROCESS p17;
+
+p16:PROCESS(clk_1k,bn7)------------------------------------------Ä£¿é3
+	BEGIN
+	if bn7 = '0' then
     KEY_VAL <= "0000";
    else
       if key_pressed_flag = '1' THEN
          if (KEY_COL_val="0001" AND KEY_ROW_val="0001") then --¾ØÕó°´¼ü±àÂë£¬KEY_VAL¿ÉÒÔ¸ù¾ÝÊµ¼Ê°´¼ü½øÐÐµ÷½Ú
-            KEY_VAL<="1101";
+            KEY_VAL<="1101";--D
 			elsif (KEY_COL_val="0001" AND KEY_ROW_val="0010") then
-            KEY_VAL<="1100";
+            KEY_VAL<="1100";--C
 			elsif(KEY_COL_val="0001" AND KEY_ROW_val="0100") THEN
-            KEY_VAL<="1011";
+            KEY_VAL<="1011";--B
 			ELSIF(KEY_COL_val="0001" AND KEY_ROW_val="1000") THEN
-            KEY_VAL<="1010";
+            KEY_VAL<="1010";--A
 
 			ELSIF(KEY_COL_val="0010" AND KEY_ROW_val="0001") THEN --¾ØÕó°´¼üµÄ#
-            KEY_VAL<="1111";
+            KEY_VAL<="1111";--#
 			ELSIF(KEY_COL_val="0010" AND KEY_ROW_val="0010") THEN
-            KEY_VAL<="1001";
+            KEY_VAL<="1001";--9
 			ELSIF(KEY_COL_val="0010" AND KEY_ROW_val="0100") then
-            KEY_VAL<="0110";
+            KEY_VAL<="0110";--6
 			ELSIF(KEY_COL_val="0010" AND KEY_ROW_val="1000") THEN
-            KEY_VAL<="0011";
+            KEY_VAL<="0011";--3
 
 			ELSIF(KEY_COL_val="0100" AND KEY_ROW_val="0001") THEN
-            KEY_VAL<="0000";
+            KEY_VAL<="0000";--0
       	ELSIF(KEY_COL_val="0100" AND KEY_ROW_val="0010") THEN
-            KEY_VAL<="1000";
+            KEY_VAL<="1000";--8
 			ELSIF(KEY_COL_val="0100" AND KEY_ROW_val="0100") THEN
-            KEY_VAL<="0101";
+            KEY_VAL<="0101";--5
 			ELSIF(KEY_COL_val="0100" AND KEY_ROW_val="1000") THEN
-            KEY_VAL<="0010";
+            KEY_VAL<="0010";--2
 
 			ELSIF(KEY_COL_val="1000" AND KEY_ROW_val="0001") THEN--/¾ØÕó°´¼üµÄ*
-            KEY_VAL<="1110";
+            KEY_VAL<="1110";--*
 			ELSIF(KEY_COL_val="1000" AND KEY_ROW_val="0001") THEN
-            KEY_VAL<="0111";
+            KEY_VAL<="0111";--7
 			ELSIF(KEY_COL_val="1000" AND KEY_ROW_val="0001") THEN
-            KEY_VAL<="0100";
+            KEY_VAL<="0100";--4
 			ELSif (KEY_COL_val="1000" AND KEY_ROW_val="0001") THEN 
-            KEY_VAL<="0001";
+            KEY_VAL<="0001";--1
          else
             null;
          END IF;
@@ -122,9 +131,9 @@ p16:PROCESS(clk_1k,reset)------------------------------------------Ä£¿é3
    end if;
 END PROCESS p16;---------------------------------------½áÊø
 
-p15:PROCESS(clk_1k,reset)------------------------------------------4x4Ä£¿é¿ªÊ¼É¨Ãè¸³Öµ¸ø¼üÅÌ
+p15:PROCESS(clk_1k,bn7)------------------------------------------4x4Ä£¿é¿ªÊ¼É¨Ãè¸³Öµ¸ø¼üÅÌ
    begin
-   IF reset='0' THEN
+   IF bn7='0' THEN
       
       KEY_COL              <= "0000";
       key_pressed_flag <=    '0';
@@ -149,14 +158,15 @@ p15:PROCESS(clk_1k,reset)------------------------------------------4x4Ä£¿é¿ªÊ¼É¨
         KEY_COL_val          <= KEY_COL;  	--// Ëø´æÁÐÖµ
         KEY_ROW_val          <= KEY_ROW;  	--// Ëø´æÐÐÖµ
         key_pressed_flag <= '1';         -- // ÖÃ¼üÅÌ°´ÏÂ±êÖ¾  
-      
+      WHEN OTHERS=>
+		NULL;
      end case;
    END IF;
 END PROCESS p15;
 
-p14:PROCESS(clk_1k,reset)------------------------------------------ÖØÖÃÄ£¿é
+p14:PROCESS(clk_1k,bn7)------------------------------------------ÖØÖÃÄ£¿é
 	BEGIN
-	IF reset='0' THEN
+	IF bn7='0' THEN
 		current_state<=NO_KEY_PRESSED;
 	ELSE
     current_state<= next_state; --±£³Ö×´Ì¬ÔË×ª
@@ -197,7 +207,9 @@ p13:PROCESS(clk_1k,KEY_ROW)-------------------------------------------------4x4Ä
           next_state <= KEY_PRESSED;
         else
           next_state <= NO_KEY_PRESSED; 
-        end if	;		 
+        end if	;	
+	 WHEN OTHERS=>
+	   	NULL;
   end case;
 END PROCESS p13;-------------4x4Ä£¿é½áÊø
 
@@ -276,7 +288,7 @@ END PROCESS p4;
 p5:PROCESS(clk_1k,bn3)
 	BEGIN
 		IF(clk_1k'event AND clk_1k = '1') THEN
-			IF(bn3 = '1') THEN
+			IF(KEY_VAL="0001") THEN
 				IF count_BTN3= 20 THEN
 					count_BTN3 <= count_BTN3;
 				ELSE
@@ -382,7 +394,7 @@ IF(clk_1k'event AND clk_1k = '1') THEN--------------------------------¹ºÂòÄ£¿é
             money0<="1001";money1<="1001";
          ELSE money1<=money1+1;
          END IF;------------------------------------------¹ºÂòÄ£¿é½áÊø
-   ELSIF btn3='1'THEN-------------------------------------Ïû·ÑÄ£¿é
+   ELSIF btn3='1' THEN-------------------------------------Ïû·ÑÄ£¿é
          IF money1>"0000" or money0>"0010" THEN-----------Ç®Êý´óÓÚ¹»ÂòÎïÆ·Ç®Êý
             led1<='1';led2<='0';led3<='0';
             disp2<="11111001";-----------------------------ÏÔÊ¾¹»ÂòÎïÆ·ÖÖÀà
@@ -434,7 +446,7 @@ IF(clk_1k'event AND clk_1k = '1') THEN--------------------------------¹ºÂòÄ£¿é
          disp2<="11000000"; 
          
          END IF;
-   ELSIF btn4='1'THEN
+   ELSIF btn4='1' THEN
          IF money1>"0000" or money0>"1000" THEN
             led2<='1';led1<='0';led3<='0';
             disp2<="10100100";
@@ -486,7 +498,7 @@ CASE money1 IS
          disp2<="11000000";
          
          END IF;
-   ELSIF btn5='1'THEN
+   ELSIF btn5='1' THEN
          IF money1>"0001" or (money1="0001" and money0>"0001") THEN
             led3<='1';led1<='0';led2<='0';
             disp2<="10110000";

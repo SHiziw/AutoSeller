@@ -4,15 +4,15 @@
 NET "CLK_50M" LOC = T8;
 NET "reset" LOC = H2;
 
-#NET "KEY_COL[0]" LOC = D8;
-#NET "KEY_COL[1]" LOC = E7;
-#NET "KEY_COL[2]" LOC = C7;
-#NET "KEY_COL[3]" LOC = F7;
+NET "KEY_COL[0]" LOC = D8;
+NET "KEY_COL[1]" LOC = E7;
+NET "KEY_COL[2]" LOC = C7;
+NET "KEY_COL[3]" LOC = F7;
 
-#NET "KEY_ROW[0]" LOC = C4;
-#NET "KEY_ROW[1]" LOC = D5;
-#NET "KEY_ROW[2]" LOC = C5;
-#NET "KEY_ROW[3]" LOC = E6;
+NET "KEY_ROW[0]" LOC = C4;
+NET "KEY_ROW[1]" LOC = D5;
+NET "KEY_ROW[2]" LOC = C5;
+NET "KEY_ROW[3]" LOC = E6;
 
 NET "bn0" LOC = D11;
 NET "bn1" LOC = C10;
@@ -40,7 +40,7 @@ NET "led1" LOC = N9;
 NET "led2" LOC = P9;
 NET "led3" LOC = L10;
 NET "led4" LOC = M10;
-# NET "led[4]" LOC = P11;
+NET "led5" LOC = P11;
 # NET "led[5]" LOC = M11;
 # NET "led[6]" LOC = P12;
 # NET "led[7]" LOC = N12;
