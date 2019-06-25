@@ -45,16 +45,6 @@ end hdbshj;
 
 architecture Behavioral of hdbshj is
 
-SIGNAL key_val: STD_LOGIC_VECTOR(7 DOWNTO 0);
-CONSTANT NO_KEY_PRESSED:STD_LOGIC_VECTOR(5 downto 0):="000001";  --没有按键按下  
-CONSTANT SCAN_KEY_COL0:STD_LOGIC_VECTOR(5 downto 0):="000010";  -- 扫描第0列 
-CONSTANT SCAN_KEY_COL1:STD_LOGIC_VECTOR(5 downto 0):="000100";  -- 扫描第1列 
-CONSTANT SCAN_KEY_COL2:STD_LOGIC_VECTOR(5 downto 0):="001000";  --扫描第2列 
-CONSTANT SCAN_KEY_COL3:STD_LOGIC_VECTOR(5 downto 0):="010000";  -- 扫描第3列 
-CONSTANT KEY_PRESSED:STD_LOGIC_VECTOR(5 downto 0):="100000";  -- 有按键按下
-SIGNAL current_state:STD_LOGIC_VECTOR(5 downto 0); --现在状态
-SIGNAL next_state:STD_LOGIC_VECTOR(5 downto 0);  --下个状态
-
 SIGNAL  disp0,disp1,disp2,disp4,disp5:STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL  btn0,btn1,btn2,btn3,btn4,btn5,btn7 :STD_LOGIC:='0';
 SIGNAL clk_1,clk_1k:STD_LOGIC;
@@ -71,52 +61,7 @@ SIGNAL count_BTN5:INTEGER RANGE 0 TO 20;
 SIGNAL count_BTN7:INTEGER RANGE 0 TO 20;
 BEGIN
 
-p14:PROCESS(clk_1k,reset)------------------------------------------重置模块
-	BEGIN
-	IF reset='0' THEN
-		current_state<=NO_KEY_PRESSED;
-	ELSE
-    current_state<= next_state;
-	END IF;
-END PROCESS p14;
 
-p13:PROCESS(clk_1k,bn0)-------------------------------------------------4x4模块开始
-	BEGIN
-	case current_state is
-    WHEN NO_KEY_PRESSED=>next_state<=SCAN_KEY_COL0;--                 	  没有按键按下	
-          		 -- 开始扫描列，进入循环
-    WHEN SCAN_KEY_COL0=>                        -- 扫描第0列
-        if KEY_ROW /="0000"  THEN
-          next_state<=KEY_PRESSED;
-        else
-          next_state <= SCAN_KEY_COL1;
-		  end if;
-    WHEN SCAN_KEY_COL1=>                        -- 扫描第1列 
-        if KEY_ROW /="0000" THEN
-          next_state <= KEY_PRESSED;
-        else
-          next_state <= SCAN_KEY_COL2;
-		  end if;
-    WHEN SCAN_KEY_COL2=>                         --扫描第2列
-        if KEY_ROW /="0000" THEN
-          next_state <= KEY_PRESSED;
-        else
-          next_state <= SCAN_KEY_COL3;
-		  end if;
-    WHEN SCAN_KEY_COL3=>                         --扫描第3列
-        if KEY_ROW /="0000" THEN
-          next_state <= KEY_PRESSED;
-        else
-          next_state <= NO_KEY_PRESSED;
-		  end if;
-    WHEN KEY_PRESSED=>                       --有按键按下
-        if KEY_ROW /="0000" THEN
-          next_state <= KEY_PRESSED;
-        else
-          next_state <= NO_KEY_PRESSED; 
-        end if	;		 
-  end case;
-END PROCESS p13;-------------4x4模块结束
 
 p1:PROCESS(clk_50M,reset)---------------------------------分频模块
 	BEGIN
