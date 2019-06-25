@@ -39,3 +39,11 @@ _ngo/
 xst/
 xlnx_auto_0_xdb/
 *.xrpt
+isim/
+*.prj
+*.wdb
+*.ini
+*.xmsgs
+*.cmd
+*.exe
+*.ngm
