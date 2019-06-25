@@ -47,3 +47,6 @@ isim/
 *.cmd
 *.exe
 *.ngm
+*.xwbt
+*.iso
+*.xpi
